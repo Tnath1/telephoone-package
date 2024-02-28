@@ -1,42 +1,40 @@
-// Observer class
+const readline = require('readline');
+
+// Step 1: Create Observer Class
 class Observer {
     update(number) {
         // To be implemented by concrete observer classes
     }
 }
 
-// Concrete observer class to print the phone number
+// Step 2: Create Concrete Observer Classes
 class PrintPhoneNumberObserver extends Observer {
     update(number) {
         console.log("Dialing", number);
     }
 }
 
-// Concrete observer class to print a custom message
 class PrintCustomMessageObserver extends Observer {
     update(number) {
         console.log("Now Dialing", number);
     }
 }
 
-// Telephone class
+// Step 3: Create Telephone Class
 class Telephone {
     constructor() {
         this.phoneNumbers = new Set();
         this.observers = [];
     }
 
-    // Method to add a phone number
     addPhoneNumber(number) {
         this.phoneNumbers.add(number);
     }
 
-    // Method to remove a phone number
     removePhoneNumber(number) {
         this.phoneNumbers.delete(number);
     }
 
-    // Method to dial a phone number
     dialPhoneNumber(number) {
         if (this.phoneNumbers.has(number)) {
             this.notifyObservers(number);
@@ -45,12 +43,10 @@ class Telephone {
         }
     }
 
-    // Method to add an observer
     addObserver(observer) {
         this.observers.push(observer);
     }
 
-    // Method to remove an observer
     removeObserver(observer) {
         const index = this.observers.indexOf(observer);
         if (index !== -1) {
@@ -58,7 +54,6 @@ class Telephone {
         }
     }
 
-    // Method to notify all observers
     notifyObservers(number) {
         this.observers.forEach(observer => {
             observer.update(number);
@@ -66,19 +61,36 @@ class Telephone {
     }
 }
 
-// Usage
+// Step 4: Instantiate Objects
 const telephone = new Telephone();
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-// Creating observers
+// Step 5: Add Observers to Telephone
 const observer1 = new PrintPhoneNumberObserver();
 const observer2 = new PrintCustomMessageObserver();
 
-// Adding observers to the telephone
 telephone.addObserver(observer1);
 telephone.addObserver(observer2);
 
-// Adding a phone number
-telephone.addPhoneNumber("2347023232");
+// Step 6: Create a function to handle user input
+function handleUserInput() {
+    rl.question("Enter a phone number to add (or 'q' to quit): ", function(number) {
+        if (number.toLowerCase() === 'q') {
+            rl.close();
+            console.log("Goodbye!");
+            return;
+        }
+        telephone.addPhoneNumber(number);
+        console.log("Phone number added:", number);
+        handleUserInput();
+    });
+}
 
-// Dialing the phone number
-telephone.dialPhoneNumber("2347023232");
+// Step 7: Start the application
+console.log("Welcome to the telephone app!");
+handleUserInput();
+
+// Step 8: Test the Application (Input phone numbers in the terminal)
