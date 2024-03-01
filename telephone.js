@@ -72,5 +72,7 @@ telephone.addObserver(observer1);
 telephone.addObserver(observer2);
 
 telephone.addPhoneNumber("2347023232");
+telephone.addPhoneNumber("2348143837");
+telephone.addPhoneNumber("2347097363");
 
 telephone.dialPhoneNumber("2347023232");
