@@ -1,96 +1,76 @@
-const readline = require('readline');
-
-// Step 1: Create Observer Class
 class Observer {
-    update(number) {
-        // To be implemented by concrete observer classes
-    }
+  notify() {}
 }
 
-// Step 2: Create Concrete Observer Classes
 class PrintPhoneNumberObserver extends Observer {
-    update(number) {
-        console.log("Dialing", number);
-    }
+  notify(phoneNumber) {
+    console.log("Phone number: " + phoneNumber);
+  }
 }
 
-class PrintCustomMessageObserver extends Observer {
-    update(number) {
-        console.log("Now Dialing", number);
-    }
+class PrintDialingMessageObserver extends Observer {
+  notify(phoneNumber) {
+    console.log("Now Dialing " + phoneNumber);
+  }
 }
 
-// Step 3: Create Telephone Class
 class Telephone {
-    constructor() {
-        this.phoneNumbers = new Set();
-        this.observers = [];
-    }
+  constructor() {
+    this.phoneNumbers = new Set();
+    this.observers = [];
+  }
 
-    addPhoneNumber(number) {
-        this.phoneNumbers.add(number);
-    }
+  // Method to add a phone number
+  addPhoneNumber(phoneNumber) {
+    this.phoneNumbers.add(phoneNumber);
+  }
 
-    removePhoneNumber(number) {
-        this.phoneNumbers.delete(number);
-    }
+  // Method to remove a phone number
+  removePhoneNumber(phoneNumber) {
+    this.phoneNumbers.delete(phoneNumber);
+  }
 
-    dialPhoneNumber(number) {
-        if (this.phoneNumbers.has(number)) {
-            this.notifyObservers(number);
-        } else {
-            console.log("Error: Phone number not found.");
-        }
+  // Method to dial a phone number
+  dialPhoneNumber(phoneNumber) {
+    if (this.phoneNumbers.has(phoneNumber)) {
+      // Notify all observers
+      this.notifyObservers(phoneNumber);
+    } else {
+      console.log("Error: Phone number not found.");
     }
+  }
 
-    addObserver(observer) {
-        this.observers.push(observer);
-    }
+  // Method to add an observer
+  addObserver(observer) {
+    this.observers.push(observer);
+  }
 
-    removeObserver(observer) {
-        const index = this.observers.indexOf(observer);
-        if (index !== -1) {
-            this.observers.splice(index, 1);
-        }
+  // Method to remove an observer
+  removeObserver(observer) {
+    const index = this.observers.indexOf(observer);
+    if (index !== -1) {
+      this.observers.splice(index, 1);
     }
+  }
 
-    notifyObservers(number) {
-        this.observers.forEach(observer => {
-            observer.update(number);
-        });
-    }
+  // Method to notify all observers
+  notifyObservers(phoneNumber) {
+    this.observers.forEach((observer) => {
+      observer.notify(phoneNumber);
+    });
+  }
 }
 
-// Step 4: Instantiate Objects
 const telephone = new Telephone();
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
 
-// Step 5: Add Observers to Telephone
+// Creating observers
 const observer1 = new PrintPhoneNumberObserver();
-const observer2 = new PrintCustomMessageObserver();
+const observer2 = new PrintDialingMessageObserver();
 
+// Adding observers to the telephone
 telephone.addObserver(observer1);
 telephone.addObserver(observer2);
 
-// Step 6: Create a function to handle user input
-function handleUserInput() {
-    rl.question("Enter a phone number to add (or 'q' to quit): ", function(number) {
-        if (number.toLowerCase() === 'q') {
-            rl.close();
-            console.log("Goodbye!");
-            return;
-        }
-        telephone.addPhoneNumber(number);
-        console.log("Phone number added:", number);
-        handleUserInput();
-    });
-}
+telephone.addPhoneNumber("2347023232");
 
-// Step 7: Start the application
-console.log("Welcome to the telephone app!");
-handleUserInput();
-
-// Step 8: Test the Application (Input phone numbers in the terminal)
+telephone.dialPhoneNumber("2347023232");
