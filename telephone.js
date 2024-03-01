@@ -1,3 +1,4 @@
+// observer class
 class Observer {
   notify() {}
 }
