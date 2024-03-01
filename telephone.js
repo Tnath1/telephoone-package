@@ -65,7 +65,6 @@ class Telephone {
 const telephone = new Telephone();
 
 // Creating observers
-
 const observer1 = new PrintPhoneNumberObserver();
 const observer2 = new PrintDialingMessageObserver();
 
